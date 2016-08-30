@@ -1,0 +1,57 @@
+﻿@section scripts{
+    <script src="~/Scripts/angular/Transactions.js"></script>
+}
+
+<p class="row">
+    <div>
+        <details>
+            <summary style="font-size: 21px;">
+                Create transaction
+            </summary><br>
+            <form ng-submit="submit()" ng-controller="ProductAddController">
+<p class="block">
+    <label>Recipient:</label>
+    <input type="text" ng-model="Name" required>
+</p>
+<p class="block">
+    <label>Amount:</label>
+    <input type="number" ng-model="Type" required>
+</p>
+<p><input class="btn btn-default" type="submit" id="productsubmit" value="Submit transaction" /></p>
+            </form>
+        </details>
+    </div><br>
+<div>
+    <details>
+        <summary style="font-size: 21px;">
+            Transaction history
+        </summary><br>
+        <div ng-app="uTransactions" class="container">
+            <p>
+            <input type="text" placeholder="Search Transaction" ng-model="searchTransaction" />
+            </p>
+
+            <div ng-controller="TransactionsController">
+                <table class="table">
+                    <tr>
+                        <th>Payee name</th>
+                        <th>Payee email</th>
+                        <th>Recipient name</th>
+                        <th>Recipient email</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                    <tr ng-repeat="r in transactions | filter : searchTransaction  | orderBy:'-Date' ">
+                        <td>{{r.PayeeName}}</td>
+                        <td>{{r.PayeeEmail}}</td>
+                        <td>{{r.RecipientName}}</td>
+                        <td>{{r.RecipientEmail}}</td>
+                        <td>{{r.Amount}}</td>
+                        <td>{{r.Date}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </details>
+</div>
+</p> 

@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="jumbotron" @{if (ViewBag.UserIsAuthenticated == true) { ViewContext.Writer.Write(@"style=""display: none; """); } }>
+    <p class="lead">Parrot Wings is an “internal money” (<b>PW</b>) transfer system available for users all around the world. Register for free and get 500 PW as a gift!</p>
+</div> 
+<p class="row">
+    <div class="col-md-4">@Html.Partial("_LoginPartial")</div>
+    <div class="col-md-4">@Html.Partial("_RegisterPartial")</div>
+</p> 
+<p class="row"></p>

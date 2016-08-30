@@ -1,0 +1,29 @@
+﻿<p></p>
+<div  
+     @{if (ViewBag.UserIsAuthenticated == true)
+         { ViewContext.Writer.Write(@"style=""display: block; """); }
+         else
+         { ViewContext.Writer.Write(@"style =""display: none; """); } }
+     class="userInfo">
+    <form>
+        <p>You are logged in as <span class="userName">@ViewBag.UserName</span>.</p>
+        <input onclick="logout()" class="btn btn-default" type="button" value="Logout" id="logOut" />
+        <p></p>
+        <p><a href="@Url.Action("Index","Home")" class="btn btn-primary btn-lg">Start using PW &raquo;</a></p>
+    </form>
+</div>
+
+<div class="loginForm" @{if (ViewBag.UserIsAuthenticated == true) { ViewContext.Writer.Write(@"style=""display: none; """); } }>
+    <h3>Login</h3>
+    <form>
+        <p class="block">
+            <label>Email: </label>
+            <input type="email" id="emailLogin"/>
+        </p>
+        <p class="block">
+            <label>Password: </label>
+            <input type="password" id="passwordLogin" />
+        </p>
+        <input onclick="login()" class="btn btn-default" type="button" id="submitLogin" value="Login" />
+    </form>
+</div>

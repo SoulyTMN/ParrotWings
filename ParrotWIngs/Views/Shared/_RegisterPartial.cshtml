@@ -1,0 +1,25 @@
+﻿<div>
+    <h3>Register new user</h3>
+    <form>
+        <p class="block">
+            <label>User name:</label>
+            <input type="text" id="name" />
+        </p> 
+        <p class="block">
+            <label>Email:</label>
+            <input type="email" id="email" />
+        </p> 
+        <p class="block">
+            <label>Password:</label>
+            <input type="password" id="password" />
+        </p>
+        <p class="block">
+            <label>Confirm password:</label>
+            <input type="password" id="confirmpassword" />
+        </p>
+        <input class="btn btn-default" type="button" onclick="register()" id="submit" value="Register" />
+        <p id="after_registration"></p>
+    </form>
+</div>
+
+<script src="~/Scripts/auth/register.js"></script>
