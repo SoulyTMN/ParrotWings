@@ -10,21 +10,38 @@ using System.Web.Http;
 
 namespace ParrotWIngs.Controllers
 {
-    public abstract class BaseApiController: ApiController
+    public abstract class BaseApiController : ApiController
     {
         private ApplicationUser _member;
 
-        public ApplicationUserManager UserManager
+        public static ApplicationUser FindUserByEmail(string _email)
         {
-            get { return HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            ApplicationDbContext db = ApplicationDbContext.Create();
+            return db.Users.ToList().Find(x => x.Email == _email);
+        }
+
+        public static ApplicationUser FindUserByName(string _name)
+        {
+            ApplicationDbContext db = ApplicationDbContext.Create();
+            return db.Users.ToList().Find(x => x.UserName == _name);
         }
 
         public string UserIdentityId
         {
             get
             {
-                var user = UserManager.FindByName(Thread.CurrentPrincipal.Identity.Name);
-                return user.Id;
+                string userId = null;
+                try
+                {
+                    if (User.Identity.Name != null)
+                        userId = FindUserByName(User.Identity.Name).Id;
+                    else if (Thread.CurrentPrincipal.Identity.Name != null)
+                        userId = FindUserByName(Thread.CurrentPrincipal.Identity.Name).Id;
+                }
+                catch (Exception e)
+                {
+                }
+                return userId;
             }
         }
 
@@ -32,11 +49,19 @@ namespace ParrotWIngs.Controllers
         {
             get
             {
-                if (_member != null)
+                try
                 {
-                    return _member;
+                    if (_member != null)
+                    {
+                        return _member;
+                    }
+                    if (Thread.CurrentPrincipal.Identity.Name != null)
+                        _member = FindUserByEmail(Thread.CurrentPrincipal.Identity.Name);
                 }
-                _member = UserManager.FindByEmail(Thread.CurrentPrincipal.Identity.Name);
+                catch (Exception e)
+                {
+                }
+
                 return _member;
             }
             set

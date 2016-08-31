@@ -1,23 +1,24 @@
 ﻿@section scripts{
-    <script src="~/Scripts/angular/Transactions.js"></script>
+    <script src="~/Scripts/angular/transactions.js"></script>
 }
 
+<body ng-app="app">
 <p class="row">
     <div>
         <details>
             <summary style="font-size: 21px;">
                 Create transaction
             </summary><br>
-            <form ng-submit="submit()" ng-controller="ProductAddController">
-<p class="block">
-    <label>Recipient:</label>
-    <input type="text" ng-model="Name" required>
-</p>
-<p class="block">
-    <label>Amount:</label>
-    <input type="number" ng-model="Type" required>
-</p>
-<p><input class="btn btn-default" type="submit" id="productsubmit" value="Submit transaction" /></p>
+            <form ng-submit="submit()" ng-controller="TransactionCommitController">
+                <p class="block">
+                    <label>Recipient:</label>
+                    <input type="text" ng-model="RecipientId" required>
+                </p>
+                <p class="block">
+                    <label>Amount:</label>
+                    <input type="number" ng-model="Amount" required>
+                </p>
+                <p><input class="btn btn-default" type="submit" id="trnsubmit" value="Submit transaction" /></p>
             </form>
         </details>
     </div><br>
@@ -26,7 +27,7 @@
         <summary style="font-size: 21px;">
             Transaction history
         </summary><br>
-        <div ng-app="uTransactions" class="container">
+        <div class="container">
             <p>
             <input type="text" placeholder="Search Transaction" ng-model="searchTransaction" />
             </p>
@@ -55,3 +56,4 @@
     </details>
 </div>
 </p> 
+</body>

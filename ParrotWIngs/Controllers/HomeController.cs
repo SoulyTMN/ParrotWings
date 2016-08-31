@@ -19,7 +19,6 @@ namespace ParrotWIngs.Controllers
             ApplicationDbContext db = ApplicationDbContext.Create();
 
             var user = db.Users.ToList().FirstOrDefault(x => x.Email == User.Identity.Name);
-            Session["userID"] = user.Id;
             ViewBag.UserName = user.Email;
             try
             {

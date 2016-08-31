@@ -15,7 +15,6 @@ function login() {
             $('.userInfo').css('display', 'block');
             $('.loginForm').css('display', 'none'); 
             sessionStorage.setItem(tokenKey, data.access_token);
-            console.log(data.access_token);
             alert("Login successful.");
         }).fail(function (data) {
             alert('Login failed.');
@@ -23,5 +22,17 @@ function login() {
 }
 
 function logout() {
-    sessionStorage.removeItem(tokenKey);
+    $.ajax({
+        type: 'POST',
+        url: 'api/Account/Logout',
+        beforeSend: function (xhr) {
+            var token = sessionStorage.getItem(tokenKey);
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
+        }
+    }).success(function (data) {
+        sessionStorage.removeItem(tokenKey);
+        location.reload();
+    }).fail(function (data) {
+        alert('Logout failed.');
+    });
 }

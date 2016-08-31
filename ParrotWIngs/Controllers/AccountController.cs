@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.OAuth;
 using ParrotWIngs.Models;
 using ParrotWIngs.Providers;
 using ParrotWIngs.Results;
+using System.Linq;
 
 namespace ParrotWIngs.Controllers
 {
@@ -50,6 +51,24 @@ namespace ParrotWIngs.Controllers
         }
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
+
+
+        // GET: api/Account/PwUsers
+        [Route("PwUsers")] 
+        public IQueryable<UserDTO> GetPwUsers()
+        {
+            ApplicationDbContext db = ApplicationDbContext.Create();
+            var users = from t in db.Users
+                               select new UserDTO()
+                               {
+                                   Id = t.Id,
+                                   Name = t.PwName,
+                                   Email = t.Email
+                               };
+
+            return users;
+        }
+
 
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]

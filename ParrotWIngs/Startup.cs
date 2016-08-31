@@ -14,7 +14,6 @@ namespace ParrotWIngs
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-
             HttpConfiguration config = new HttpConfiguration();
             app.Map("/api", inner =>
              {

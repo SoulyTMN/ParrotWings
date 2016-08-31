@@ -13,6 +13,7 @@ using ParrotWIngs.Models;
 
 namespace ParrotWIngs.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Transactions")]
     public class TransactionsController : BaseApiController
     {
@@ -117,10 +118,61 @@ namespace ParrotWIngs.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        // POST: api/Transactions/my
+        [Route("my")]
+        [ResponseType(typeof(Transaction))]
+        public async Task<IHttpActionResult> PostTransaction(Transaction transaction)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (transaction.Amount < 0)
+                throw new Exception("Negative amout transactions are not allowed!");
+            transaction.PayeeId = UserIdentityId;
+            transaction.Date = DateTime.Now;
+
+            db.Transactions.Add(transaction);
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (TransactionExists(transaction.Id))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            db.Entry(transaction).Reference(x => x.Payee).Load();
+            db.Entry(transaction).Reference(x => x.Recipient).Load();
+            var dto = new TransactionDTO()
+            {
+                Id = transaction.Id,
+                PayeeName = transaction.Payee.PwName,
+                PayeeEmail = transaction.Payee.Email,
+                RecipientName = transaction.Recipient.PwName,
+                RecipientEmail = transaction.Recipient.Email,
+                Amount = transaction.Amount,
+                Date = transaction.Date
+            };
+
+            var result = CreatedAtRoute("DefaultApi", new { id = transaction.Id }, dto);
+
+            return Ok(transaction);
+        }
+
         // POST: api/Transactions
         [Route("")]
         [ResponseType(typeof(Transaction))]
-        public async Task<IHttpActionResult> PostTransaction(Transaction transaction)
+        public async Task<IHttpActionResult> PostMyTransaction(Transaction transaction)
         {
             if (!ModelState.IsValid)
             {
