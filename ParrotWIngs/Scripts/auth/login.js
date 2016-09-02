@@ -14,7 +14,7 @@ function login() {
             $('.userName').text(data.userName);
             $('.userInfo').css('display', 'block');
             $('.loginForm').css('display', 'none'); 
-            sessionStorage.setItem(tokenKey, data.access_token);
+            document.cookie = "token.cookie=" + data.access_token + ";";
             alert("Login successful.");
         }).fail(function (data) {
             alert('Login failed.');
@@ -26,13 +26,26 @@ function logout() {
         type: 'POST',
         url: 'api/Account/Logout',
         beforeSend: function (xhr) {
-            var token = sessionStorage.getItem(tokenKey);
+            var token = getCookie("token.cookie");
             xhr.setRequestHeader("Authorization", "Bearer " + token);
         }
     }).success(function (data) {
-        sessionStorage.removeItem(tokenKey);
+        expireCookie("token.cookie");
         location.reload();
     }).fail(function (data) {
         alert('Logout failed.');
     });
+}
+
+
+function expireCookie(name)
+{
+    document.cookie = name + '=;expires=Thu,01 Jan 1970 00:00:01 GMT;'
+}
+
+function getCookie(name)
+{
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length === 2) return parts.pop().split(";").shift();
 }

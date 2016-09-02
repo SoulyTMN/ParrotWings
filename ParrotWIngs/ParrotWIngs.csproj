@@ -227,11 +227,21 @@
     <Compile Include="Migrations\201608301009067_FK_Transactions_ApplicationUser.Designer.cs">
       <DependentUpon>201608301009067_FK_Transactions_ApplicationUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609020439092_newfield_Transactions-resultingBalance.cs" />
+    <Compile Include="Migrations\201609020439092_newfield_Transactions-resultingBalance.Designer.cs">
+      <DependentUpon>201609020439092_newfield_Transactions-resultingBalance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609020640322_new_fields_Transactions.cs" />
+    <Compile Include="Migrations\201609020640322_new_fields_Transactions.Designer.cs">
+      <DependentUpon>201609020640322_new_fields_Transactions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Static.cs" />
     <Compile Include="Models\Transaction.cs" />
+    <Compile Include="Models\MyTransactionDTO.cs" />
     <Compile Include="Models\TransactionDTO.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\UserAccountDTO.cs" />
@@ -251,7 +261,6 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\angular\transactions.js" />
-    <Content Include="Scripts\angular\users.js" />
     <Content Include="Scripts\auth\login.js" />
     <Content Include="Scripts\auth\register.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -327,6 +336,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608301009067_FK_Transactions_ApplicationUser.resx">
       <DependentUpon>201608301009067_FK_Transactions_ApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609020439092_newfield_Transactions-resultingBalance.resx">
+      <DependentUpon>201609020439092_newfield_Transactions-resultingBalance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609020640322_new_fields_Transactions.resx">
+      <DependentUpon>201609020640322_new_fields_Transactions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -79,3 +79,5 @@ c:\users\nikitin-sv\documents\visual studio 2015\Projects\ParrotWIngs\ParrotWIng
 c:\users\nikitin-sv\documents\visual studio 2015\Projects\ParrotWIngs\ParrotWIngs\obj\Debug\ParrotWIngs.Migrations.updateReferences.resources
 c:\users\nikitin-sv\documents\visual studio 2015\Projects\ParrotWIngs\ParrotWIngs\obj\Debug\ParrotWIngs.csprojResolveAssemblyReference.cache
 c:\users\nikitin-sv\documents\visual studio 2015\Projects\ParrotWIngs\ParrotWIngs\obj\Debug\ParrotWIngs.Migrations.FK_Transactions_ApplicationUser.resources
+C:\Users\Nikitin-SV\Documents\Visual Studio 2015\Projects\ParrotWIngs\ParrotWIngs\obj\Debug\ParrotWIngs.Migrations.newfield_TransactionsresultingBalance.resources
+C:\Users\Nikitin-SV\Documents\Visual Studio 2015\Projects\ParrotWIngs\ParrotWIngs\obj\Debug\ParrotWIngs.Migrations.new_fields_Transactions.resources

@@ -1,7 +1,6 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="angular.min.js" />
 /// <reference path="angular/transactions.js" />
-/// <reference path="angular/users.js" />
 /// <reference path="auth/login.js" />
 /// <reference path="auth/register.js" />
 /// <reference path="bootstrap.js" />

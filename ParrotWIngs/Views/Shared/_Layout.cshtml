@@ -28,9 +28,9 @@
                     <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
 
                 </ul>
-                <ul class="nav navbar-nav navbar-right" style=" @{if (User.Identity.IsAuthenticated == false) { ViewContext.Writer.Write(@"visibility:hidden"); } }">
+                <ul class="nav navbar-nav navbar-right" style=" @{if (User.Identity.IsAuthenticated == false || ViewBag.UserName == null) { ViewContext.Writer.Write(@"visibility:hidden"); } }">
                     <li>
-                        <a>Hello @ViewBag.UserName! Your PW balance is <b>@ViewBag.Balance PW</b></a>
+                        <a>Hello @ViewBag.UserName! Your PW balance is <b><span id="userBalance">@ViewBag.Balance</span> PW</b></a>
                     </li>
                     <li>
                         <a href="#" onclick="logout()">Log out</a>

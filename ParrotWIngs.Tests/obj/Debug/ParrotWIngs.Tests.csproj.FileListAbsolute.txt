@@ -62,5 +62,3 @@ c:\users\nikitin-sv\documents\visual studio 2015\Projects\ParrotWIngs\ParrotWIng
 c:\users\nikitin-sv\documents\visual studio 2015\Projects\ParrotWIngs\ParrotWIngs.Tests\obj\Debug\ParrotWIngs.Tests.csprojResolveAssemblyReference.cache
 c:\users\nikitin-sv\documents\visual studio 2015\Projects\ParrotWIngs\ParrotWIngs.Tests\obj\Debug\ParrotWIngs.Tests.dll
 c:\users\nikitin-sv\documents\visual studio 2015\Projects\ParrotWIngs\ParrotWIngs.Tests\obj\Debug\ParrotWIngs.Tests.pdb
-c:\users\nikitin-sv\documents\visual studio 2015\Projects\ParrotWIngs\ParrotWIngs.Tests\bin\Debug\Microsoft.Owin.Host.SystemWeb.dll
-c:\users\nikitin-sv\documents\visual studio 2015\Projects\ParrotWIngs\ParrotWIngs.Tests\bin\Debug\Microsoft.Owin.Host.SystemWeb.xml

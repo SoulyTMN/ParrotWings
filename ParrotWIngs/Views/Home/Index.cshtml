@@ -16,7 +16,7 @@
                 </p>
                 <p class="block">
                     <label>Amount:</label>
-                    <input type="number" ng-model="Amount" required>
+                    <input type="number" min="0" ng-model="Amount" required>
                 </p>
                 <p><input class="btn btn-default" type="submit" id="trnsubmit" value="Submit transaction" /></p>
             </form>
@@ -35,20 +35,16 @@
             <div ng-controller="TransactionsController">
                 <table class="table">
                     <tr>
-                        <th>Payee name</th>
-                        <th>Payee email</th>
-                        <th>Recipient name</th>
-                        <th>Recipient email</th>
-                        <th>Amount</th>
-                        <th>Date</th>
+                        <th>Date/Time of the transaction</th>
+                        <th>Correspondent Name</th>
+                        <th>Transaction amount</th>
+                        <th>Resulting balance</th>
                     </tr>
                     <tr ng-repeat="r in transactions | filter : searchTransaction  | orderBy:'-Date' ">
-                        <td>{{r.PayeeName}}</td>
-                        <td>{{r.PayeeEmail}}</td>
-                        <td>{{r.RecipientName}}</td>
-                        <td>{{r.RecipientEmail}}</td>
-                        <td>{{r.Amount}}</td>
-                        <td>{{r.Date}}</td>
+                        <td>{{r.Date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>{{r.CorrespondentName}}</td>
+                        <td style="color:{{r.TransactionType == 1 ? 'green' : 'red'}}">{{r.TransactionType == 1 ? "Credit:" : "Debit:"}} {{r.Amount}} PW</td>
+                        <td>{{r.MyResultingBalance}}</td>
                     </tr>
                 </table>
             </div>

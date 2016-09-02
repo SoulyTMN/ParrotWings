@@ -63,25 +63,25 @@
             string recipientId = context.Users.Where(x => x.Email == "jm-miaja@terra.es").Select(x => x.Id).FirstOrDefault();
 
             context.Transactions.AddOrUpdate(x => x.Id,
-                new Transaction() { Id = 1, PayeeId = payeeId, RecipientId = recipientId, Amount = 100, Date = DateTime.ParseExact("01012016", "ddMMyyyy", CultureInfo.InvariantCulture) }
+                new Transaction() { Id = 1, PayeeId = payeeId, RecipientId = recipientId, Amount = 100, ResultingPayeeBalance = 400, ResultingRecipientBalance = 600, Date = DateTime.ParseExact("01012016", "ddMMyyyy", CultureInfo.InvariantCulture) }
                 );
 
             payeeId = recipientId;
             recipientId = context.Users.Where(x => x.Email == "iakashkin@mail.ru").Select(x => x.Id).FirstOrDefault();
             context.Transactions.AddOrUpdate(x => x.Id,
-                new Transaction() { Id = 2, PayeeId = payeeId, RecipientId = recipientId, Amount = 50, Date = DateTime.ParseExact("02012016", "ddMMyyyy", CultureInfo.InvariantCulture) }
+                new Transaction() { Id = 2, PayeeId = payeeId, RecipientId = recipientId, Amount = 50, ResultingPayeeBalance = 550, ResultingRecipientBalance = 550, Date = DateTime.ParseExact("02012016", "ddMMyyyy", CultureInfo.InvariantCulture) }
                 );
 
             payeeId = context.Users.Where(x => x.Email == "rjordan@gmail.com").Select(x => x.Id).FirstOrDefault();
             recipientId = context.Users.Where(x => x.Email == "mekoltsov@yandex.ru").Select(x => x.Id).FirstOrDefault();
             context.Transactions.AddOrUpdate(x => x.Id,
-                new Transaction() { Id = 3, PayeeId = payeeId, RecipientId = recipientId, Amount = 50, Date = DateTime.ParseExact("03012016", "ddMMyyyy", CultureInfo.InvariantCulture) }
+                new Transaction() { Id = 3, PayeeId = payeeId, RecipientId = recipientId, Amount = 50, ResultingPayeeBalance = 350, ResultingRecipientBalance = 550, Date = DateTime.ParseExact("03012016", "ddMMyyyy", CultureInfo.InvariantCulture) }
                 );
 
             recipientId = payeeId;
             payeeId = context.Users.Where(x => x.Email == "andremarty@sfr.fr").Select(x => x.Id).FirstOrDefault();
             context.Transactions.AddOrUpdate(x => x.Id,
-                new Transaction() { Id = 4, PayeeId = payeeId, RecipientId = recipientId, Amount = 50, Date = DateTime.ParseExact("03012016", "ddMMyyyy", CultureInfo.InvariantCulture) }
+                new Transaction() { Id = 4, PayeeId = payeeId, RecipientId = recipientId, Amount = 50, ResultingPayeeBalance = 450, ResultingRecipientBalance = 400, Date = DateTime.ParseExact("04012016", "ddMMyyyy", CultureInfo.InvariantCulture) }
                 );
         }
     }

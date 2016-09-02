@@ -6,11 +6,9 @@ app.controller('TransactionsController', function ($scope, TransactionsService) 
         TransactionsService.getTransactions()
         .success(function (trs) {
             $scope.transactions = trs;
-            console.log($scope.transactions);
         })
         .error(function (error) {
             $scope.status = 'Unable to load transactions data: ' + error.message;
-            console.log($scope.status);
         });
     }
 });
@@ -18,7 +16,7 @@ app.controller('TransactionsController', function ($scope, TransactionsService) 
 app.factory('TransactionsService', ['$http', function ($http) {
     var TransactionsService = {};
     TransactionsService.getTransactions = function () {
-        var token = sessionStorage.getItem("tokenInfo");  
+        var token = getCookie("token.cookie");
         var authHeader = {}
         authHeader.Authorization = "Bearer " + token;  
         var response =  $http({
@@ -29,6 +27,11 @@ app.factory('TransactionsService', ['$http', function ($http) {
 
         return response;
     };
+
+    TransactionsService.addTransaction = function () {
+
+    }
+
     return TransactionsService;
 }]);
 
@@ -41,16 +44,10 @@ app.controller('TransactionCommitController', ['$scope', '$http', function ($sco
                 "RecipientId": $scope.RecipientId,
                 "Amount": $scope.Amount
             }
-            var token = sessionStorage.getItem("tokenInfo");
+            var token = getCookie("token.cookie");
 
             var authHeader = {}
             authHeader.Authorization = "Bearer " + token;
-
-            /*$http({
-                url: "api/Transactions/my",
-                method: "POST",
-                headers: authHeader
-            });*/
 
             var config = {
                 headers: authHeader
@@ -58,19 +55,27 @@ app.controller('TransactionCommitController', ['$scope', '$http', function ($sco
 
             $http.post('api/Transactions/my', transaction, config).
             success(function (data, status, headers, config) {
-                alert('Transaction commited successfully');
+                alert('Transaction commited successfully'); 
+                $('#userBalance').text(data.MyResultingBalance);
             }).
             error(function (data, status, headers, config) {
                 alert("There was error during the transaction");
             });
         }
+
     };
 }]);
 
-app.controller('exitController', function ($scope, $window) {
-    $scope.onExit = function () {
-        $localStorage.$reset();
+function updateUserAccount(userID, balance) {
+    var uacData = {
+        UserId: userID,
+        Balance: balance
     };
 
-    $window.onbeforeunload = $scope.onExit;
-});
+    $.ajax({
+        type: 'POST',
+        url: 'api/UserAccounts',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(uacData)
+    });
+}

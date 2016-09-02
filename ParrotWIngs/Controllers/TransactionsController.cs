@@ -33,6 +33,8 @@ namespace ParrotWIngs.Controllers
                                    RecipientName = t.Recipient.PwName,
                                    RecipientEmail = t.Recipient.Email,
                                    Amount = t.Amount,
+                                   ResultingPayeeBalance = t.ResultingPayeeBalance,
+                                   ResultingRecipientBalance = t.ResultingRecipientBalance,
                                    Date = t.Date
                                };
 
@@ -40,18 +42,17 @@ namespace ParrotWIngs.Controllers
         }
 
         [Route("my")]
-        public IQueryable<TransactionDTO> GetMyTransactions()
+        public IQueryable<MyTransactionDTO> GetMyTransactions()
         {
             var transactions = from t in db.Transactions.Where(x => x.PayeeId == UserIdentityId || x.RecipientId == UserIdentityId)
-                               select new TransactionDTO()
+                               select new MyTransactionDTO()
                                {
                                    Id = t.Id,
-                                   PayeeName = t.Payee.PwName,
-                                   PayeeEmail = t.Payee.Email,
-                                   RecipientName = t.Recipient.PwName,
-                                   RecipientEmail = t.Recipient.Email,
+                                   Date = t.Date,
+                                   CorrespondentName = t.Recipient.PwName,
                                    Amount = t.Amount,
-                                   Date = t.Date
+                                   TransactionType = t.PayeeId == UserIdentityId ? Static.TransactionTypes.Debit : Static.TransactionTypes.Credit,
+                                   MyResultingBalance = t.PayeeId == UserIdentityId ? t.ResultingPayeeBalance : t.ResultingRecipientBalance
                                };
 
             return transactions;
@@ -72,6 +73,8 @@ namespace ParrotWIngs.Controllers
                  RecipientName = t.Recipient.PwName,
                  RecipientEmail = t.Recipient.Email,
                  Amount = t.Amount,
+                 ResultingPayeeBalance = t.ResultingPayeeBalance,
+                 ResultingRecipientBalance = t.ResultingRecipientBalance,
                  Date = t.Date
              }).SingleOrDefaultAsync(t => t.Id == id);
             if (transaction == null)
@@ -81,33 +84,45 @@ namespace ParrotWIngs.Controllers
 
             return Ok(transaction);
         }
-
-        // PUT: api/Transactions/5
-        [Route("{id:int}")]
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutTransaction(int id, Transaction transaction)
+         
+        // POST: api/Transactions/my
+        [Route("my")]
+        [ResponseType(typeof(MyTransactionDTO))]
+        public async Task<IHttpActionResult> PostMyTransaction(Transaction transaction)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != transaction.Id)
+            if (transaction.Amount < 0)
+                throw new Exception("Negative amout transactions are not allowed.");
+            transaction.PayeeId = UserIdentityId;
+            transaction.Date = DateTime.Now;
+
+            if (transaction.Amount < 0)
+                throw new Exception("Negative amout transactions are not allowed.");
+
+            double currentPayeeBalance = db.UserAccounts.ToList().FirstOrDefault(x => x.UserId == transaction.PayeeId).Balance;
+            if (currentPayeeBalance < transaction.Amount)
+                throw new Exception("Cannot commit the transaction. Payee balance is smaller than transaction amount.");
+            else
             {
-                return BadRequest();
+                transaction.ResultingPayeeBalance = currentPayeeBalance - transaction.Amount;
+                transaction.ResultingRecipientBalance = db.UserAccounts.ToList().FirstOrDefault(x => x.UserId == transaction.RecipientId).Balance + transaction.Amount;
             }
 
-            db.Entry(transaction).State = EntityState.Modified;
+            db.Transactions.Add(transaction);
 
             try
             {
                 await db.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateException)
             {
-                if (!TransactionExists(id))
+                if (TransactionExists(transaction.Id))
                 {
-                    return NotFound();
+                    return Conflict();
                 }
                 else
                 {
@@ -115,12 +130,26 @@ namespace ParrotWIngs.Controllers
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+
+            db.Entry(transaction).Reference(x => x.Payee).Load();
+            db.Entry(transaction).Reference(x => x.Recipient).Load();
+            var dto = new MyTransactionDTO()
+            {
+                Id = transaction.Id,
+                Date = transaction.Date,
+                CorrespondentName = transaction.Recipient.PwName,
+                Amount = transaction.Amount,
+                TransactionType = Static.TransactionTypes.Debit,
+                MyResultingBalance = transaction.ResultingPayeeBalance
+            };
+            
+            //return CreatedAtRoute("DefaultApi", new { id = transaction.Id }, dto);
+            return Ok(dto);
         }
 
-        // POST: api/Transactions/my
-        [Route("my")]
-        [ResponseType(typeof(Transaction))]
+        // POST: api/Transactions
+        [Route("")]
+        [ResponseType(typeof(TransactionDTO))]
         public async Task<IHttpActionResult> PostTransaction(Transaction transaction)
         {
             if (!ModelState.IsValid)
@@ -129,9 +158,18 @@ namespace ParrotWIngs.Controllers
             }
 
             if (transaction.Amount < 0)
-                throw new Exception("Negative amout transactions are not allowed!");
-            transaction.PayeeId = UserIdentityId;
-            transaction.Date = DateTime.Now;
+                throw new Exception("Negative amout transactions are not allowed."); 
+
+            double currentPayeeBalance = db.UserAccounts.ToList().FirstOrDefault(x => x.UserId == transaction.PayeeId).Balance;
+            if (currentPayeeBalance < transaction.Amount)
+                throw new Exception("Cannot commit the transaction. Payee balance is smaller than transaction amount.");
+            else
+            {
+                transaction.ResultingPayeeBalance = currentPayeeBalance - transaction.Amount;
+                transaction.ResultingRecipientBalance = db.UserAccounts.ToList().FirstOrDefault(x => x.UserId == transaction.RecipientId).Balance + transaction.Amount;
+            }
+
+
 
             db.Transactions.Add(transaction);
 
@@ -151,51 +189,6 @@ namespace ParrotWIngs.Controllers
                 }
             }
 
-            db.Entry(transaction).Reference(x => x.Payee).Load();
-            db.Entry(transaction).Reference(x => x.Recipient).Load();
-            var dto = new TransactionDTO()
-            {
-                Id = transaction.Id,
-                PayeeName = transaction.Payee.PwName,
-                PayeeEmail = transaction.Payee.Email,
-                RecipientName = transaction.Recipient.PwName,
-                RecipientEmail = transaction.Recipient.Email,
-                Amount = transaction.Amount,
-                Date = transaction.Date
-            };
-
-            var result = CreatedAtRoute("DefaultApi", new { id = transaction.Id }, dto);
-
-            return Ok(transaction);
-        }
-
-        // POST: api/Transactions
-        [Route("")]
-        [ResponseType(typeof(Transaction))]
-        public async Task<IHttpActionResult> PostMyTransaction(Transaction transaction)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Transactions.Add(transaction);
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (TransactionExists(transaction.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
             db.Entry(transaction).Reference(x => x.Payee).Load();
             db.Entry(transaction).Reference(x => x.Recipient).Load();
@@ -207,10 +200,13 @@ namespace ParrotWIngs.Controllers
                 RecipientName = transaction.Recipient.PwName,
                 RecipientEmail = transaction.Recipient.Email,
                 Amount = transaction.Amount,
+                ResultingPayeeBalance = transaction.ResultingPayeeBalance,
+                ResultingRecipientBalance = transaction.ResultingRecipientBalance,
                 Date = transaction.Date
             };
 
-            return CreatedAtRoute("DefaultApi", new { id = transaction.Id }, dto);
+            //return CreatedAtRoute("DefaultApi", new { id = transaction.Id }, dto);
+            return Ok(dto);
         }
 
         // DELETE: api/Transactions/5

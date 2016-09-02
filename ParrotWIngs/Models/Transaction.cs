@@ -16,9 +16,11 @@ namespace ParrotWIngs.Models
         [Required]
         public string PayeeId { get; set; }
         public ApplicationUser Payee { get; set; }
+        public double ResultingPayeeBalance { get; set; }
         [Required]
         public string RecipientId { get; set; }
         public ApplicationUser Recipient { get; set; }
+        public double ResultingRecipientBalance { get; set; }
         [Required]
         public double Amount { get; set; }
         [Required]

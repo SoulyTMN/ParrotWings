@@ -10,8 +10,10 @@ namespace ParrotWIngs.Models
         public int Id { get; set; }
         public string PayeeName { get; set; }
         public string PayeeEmail { get; set; }
+        public double ResultingPayeeBalance { get; set; }
         public string RecipientName { get; set; }
         public string RecipientEmail { get; set; }
+        public double ResultingRecipientBalance { get; set; }
         public double Amount { get; set; }
         public DateTime Date { get; set; }
     }
