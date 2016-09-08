@@ -9,9 +9,12 @@ namespace ParrotWIngs.Models
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
+        public string CorrespondentId { get; set; }
         public string CorrespondentName { get; set; }
+        public double CorrespondentResultingBalance { get; set; }
         public double Amount { get; set; }
         public Static.TransactionTypes TransactionType { get; set; }
+        public string MyId { get; set; }
         public double MyResultingBalance { get; set; }
 
     }

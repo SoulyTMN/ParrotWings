@@ -13,6 +13,7 @@ using ParrotWIngs.Models;
 
 namespace ParrotWIngs.Controllers
 {
+    [Authorize]
     public class UserAccountsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -61,12 +62,16 @@ namespace ParrotWIngs.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != userAccount.Id)
-            {
-                return BadRequest();
-            }
+            userAccount.Id = GetUserAccountId(userAccount.UserId);
 
-            db.Entry(userAccount).State = EntityState.Modified;
+            try
+            {
+                db.Entry(userAccount).State = EntityState.Modified;
+            }
+            catch (Exception e)
+            {
+
+            }
 
             try
             {
@@ -153,7 +158,12 @@ namespace ParrotWIngs.Controllers
 
         private bool UserAccountExists(int id)
         {
-            return db.UserAccounts.Count(e => e.Id == id) > 0;
+            return db.UserAccounts.AsNoTracking().Count(e => e.Id == id) > 0;
+        }
+
+        private int GetUserAccountId(string userID)
+        {
+            return db.UserAccounts.AsNoTracking().ToList().FirstOrDefault(x => x.UserId == userID).Id;
         }
     }
 }

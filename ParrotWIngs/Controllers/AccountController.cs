@@ -22,7 +22,7 @@ namespace ParrotWIngs.Controllers
 {
     [Authorize]
     [RoutePrefix("api/Account")]
-    public class AccountController : ApiController
+    public class AccountController : BaseApiController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
@@ -53,18 +53,34 @@ namespace ParrotWIngs.Controllers
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
 
-        // GET: api/Account/PwUsers
-        [Route("PwUsers")] 
-        public IQueryable<UserDTO> GetPwUsers()
+        // GET: api/Account/PwRecipients/my
+        [Route("PwRecipients/my")]
+        public IQueryable<UserDTO> GetMyPwRecipients()
+        {
+            ApplicationDbContext db = ApplicationDbContext.Create();
+            var users = from t in db.Users.Where(x=>x.Id != UserIdentityId)
+                        select new UserDTO()
+                        {
+                            Id = t.Id,
+                            Name = t.PwName,
+                            Email = t.Email
+                        };
+
+            return users;
+        }
+
+        // GET: api/Account/PwRecipients
+        [Route("PwRecipients")]
+        public IQueryable<UserDTO> GetPwRecipients()
         {
             ApplicationDbContext db = ApplicationDbContext.Create();
             var users = from t in db.Users
-                               select new UserDTO()
-                               {
-                                   Id = t.Id,
-                                   Name = t.PwName,
-                                   Email = t.Email
-                               };
+                        select new UserDTO()
+                        {
+                            Id = t.Id,
+                            Name = t.PwName,
+                            Email = t.Email
+                        };
 
             return users;
         }

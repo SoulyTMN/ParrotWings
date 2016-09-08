@@ -15,7 +15,6 @@ function login() {
             $('.userInfo').css('display', 'block');
             $('.loginForm').css('display', 'none'); 
             document.cookie = "token.cookie=" + data.access_token + ";";
-            alert("Login successful.");
         }).fail(function (data) {
             alert('Login failed.');
         }); 

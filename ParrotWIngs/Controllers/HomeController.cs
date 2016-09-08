@@ -22,7 +22,7 @@ namespace ParrotWIngs.Controllers
             ViewBag.UserName = user.Email;
             try
             {
-                ViewBag.Balance = db.UserAccounts.ToList().FirstOrDefault(x => x.UserId == user.Id).Balance;
+                ViewBag.Balance = db.UserAccounts.AsNoTracking().ToList().FirstOrDefault(x => x.UserId == user.Id).Balance;
             }
             catch
             {

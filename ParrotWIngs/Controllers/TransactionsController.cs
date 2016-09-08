@@ -49,6 +49,7 @@ namespace ParrotWIngs.Controllers
                                {
                                    Id = t.Id,
                                    Date = t.Date,
+                                   CorrespondentId = t.RecipientId,
                                    CorrespondentName = t.Recipient.PwName,
                                    Amount = t.Amount,
                                    TransactionType = t.PayeeId == UserIdentityId ? Static.TransactionTypes.Debit : Static.TransactionTypes.Credit,
@@ -103,13 +104,13 @@ namespace ParrotWIngs.Controllers
             if (transaction.Amount < 0)
                 throw new Exception("Negative amout transactions are not allowed.");
 
-            double currentPayeeBalance = db.UserAccounts.ToList().FirstOrDefault(x => x.UserId == transaction.PayeeId).Balance;
+            double currentPayeeBalance = db.UserAccounts.AsNoTracking().ToList().FirstOrDefault(x => x.UserId == transaction.PayeeId).Balance;
             if (currentPayeeBalance < transaction.Amount)
                 throw new Exception("Cannot commit the transaction. Payee balance is smaller than transaction amount.");
             else
             {
                 transaction.ResultingPayeeBalance = currentPayeeBalance - transaction.Amount;
-                transaction.ResultingRecipientBalance = db.UserAccounts.ToList().FirstOrDefault(x => x.UserId == transaction.RecipientId).Balance + transaction.Amount;
+                transaction.ResultingRecipientBalance = db.UserAccounts.AsNoTracking().ToList().FirstOrDefault(x => x.UserId == transaction.RecipientId).Balance + transaction.Amount;
             }
 
             db.Transactions.Add(transaction);
@@ -137,9 +138,12 @@ namespace ParrotWIngs.Controllers
             {
                 Id = transaction.Id,
                 Date = transaction.Date,
+                CorrespondentId = transaction.RecipientId,
                 CorrespondentName = transaction.Recipient.PwName,
+                CorrespondentResultingBalance = transaction.ResultingRecipientBalance,
                 Amount = transaction.Amount,
                 TransactionType = Static.TransactionTypes.Debit,
+                MyId = transaction.PayeeId,
                 MyResultingBalance = transaction.ResultingPayeeBalance
             };
             
@@ -160,13 +164,13 @@ namespace ParrotWIngs.Controllers
             if (transaction.Amount < 0)
                 throw new Exception("Negative amout transactions are not allowed."); 
 
-            double currentPayeeBalance = db.UserAccounts.ToList().FirstOrDefault(x => x.UserId == transaction.PayeeId).Balance;
+            double currentPayeeBalance = db.UserAccounts.AsNoTracking().ToList().FirstOrDefault(x => x.UserId == transaction.PayeeId).Balance;
             if (currentPayeeBalance < transaction.Amount)
                 throw new Exception("Cannot commit the transaction. Payee balance is smaller than transaction amount.");
             else
             {
                 transaction.ResultingPayeeBalance = currentPayeeBalance - transaction.Amount;
-                transaction.ResultingRecipientBalance = db.UserAccounts.ToList().FirstOrDefault(x => x.UserId == transaction.RecipientId).Balance + transaction.Amount;
+                transaction.ResultingRecipientBalance = db.UserAccounts.AsNoTracking().ToList().FirstOrDefault(x => x.UserId == transaction.RecipientId).Balance + transaction.Amount;
             }
 
 
