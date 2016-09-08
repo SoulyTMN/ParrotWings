@@ -32,7 +32,8 @@ namespace ParrotWIngs
                 "~/Scripts/angular-animate.min.js",
                 "~/Scripts/angular-aria.min.js",
                 "~/Scripts/angular-material.min.js",
-                "~/Scripts/angular-messages.min.js"
+                "~/Scripts/angular-messages.min.js",
+                "~/Scripts/common.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/mCustomScrollbar").Include(

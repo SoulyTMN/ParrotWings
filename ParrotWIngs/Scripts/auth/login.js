@@ -16,7 +16,7 @@ function login() {
             $('.loginForm').css('display', 'none'); 
             document.cookie = "token.cookie=" + data.access_token + ";";
         }).fail(function (data) {
-            alert('Login failed.');
+            alert(parseValidationJSON(data));
         }); 
 }
 
@@ -32,19 +32,6 @@ function logout() {
         expireCookie("token.cookie");
         location.reload();
     }).fail(function (data) {
-        alert('Logout failed.');
+        alert(parseValidationJSON(data));
     });
-}
-
-
-function expireCookie(name)
-{
-    document.cookie = name + '=;expires=Thu,01 Jan 1970 00:00:01 GMT;'
-}
-
-function getCookie(name)
-{
-    var value = "; " + document.cookie;
-    var parts = value.split("; " + name + "=");
-    if (parts.length === 2) return parts.pop().split(";").shift();
 }

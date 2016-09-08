@@ -93,6 +93,7 @@ namespace ParrotWIngs.Controllers
         }
 
         // POST: api/UserAccounts
+        [AllowAnonymous]
         [ResponseType(typeof(UserAccount))]
         public async Task<IHttpActionResult> PostUserAccount(UserAccount userAccount)
         {

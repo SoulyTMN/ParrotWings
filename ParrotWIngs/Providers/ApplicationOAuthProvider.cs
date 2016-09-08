@@ -35,7 +35,7 @@ namespace ParrotWIngs.Providers
 
             if (user == null)
             {
-                context.SetError("invalid_grant", "Имя пользователя или пароль указаны неправильно.");
+                context.SetError("invalid_grant", "Incorrect user name or password.");
                 return;
             }
 

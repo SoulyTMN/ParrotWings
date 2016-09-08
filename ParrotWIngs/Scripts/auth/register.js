@@ -21,7 +21,7 @@
         $('#after_registration').html('Successfully registered.');
 
     }).fail(function (data) {
-        alert("Registration failed.");
+        alert(parseValidationJSON(data));
     });
 
     return false;
@@ -40,6 +40,7 @@ function initUserAccount(userID) {
         data: JSON.stringify(uacData)
     }).success(function (data) {
         $('#emailLogin').val(data.Email);
-        alert("Registration successful.");
+    }).fail(function (data) {
+        alert(parseValidationJSON(data));
     });
 }

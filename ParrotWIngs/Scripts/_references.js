@@ -8,6 +8,7 @@
 /// <reference path="auth/login.js" />
 /// <reference path="auth/register.js" />
 /// <reference path="bootstrap.js" />
+/// <reference path="common.js" />
 /// <reference path="jquery.mcustomscrollbar.concat.min.js" />
 /// <reference path="jquery.validate.js" />
 /// <reference path="jquery.validate.unobtrusive.js" />
