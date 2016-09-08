@@ -4,7 +4,7 @@
 
 <div class="md-whiteframe-6dp" ng-app="app">
     <md-toolbar class="md-theme-light">
-        <h2 class="md-toolbar-tools">Create transaction</h2>
+        <h2 class="md-toolbar-tools"><i class="fa fa-credit-card" style="padding-right:10px;"></i>Create transaction</h2>
     </md-toolbar>
     <md-content flex>
         <div ng-controller="TransactionCommitController">
@@ -49,7 +49,7 @@
     </md-content>
     <div layout="column">
         <md-toolbar class="md-theme-light">
-            <h2 class="md-toolbar-tools">Transaction history</h2>
+            <h2 class="md-toolbar-tools"><i class="fa fa-credit-card-alt" style="padding-right:10px;"></i>Transaction history</h2>
         </md-toolbar>
         <md-content flex>
             <div class="container">
@@ -57,24 +57,29 @@
                 <p>
                     <input type="text" placeholder="Search Transaction" ng-model="searchTransaction" />
                 </p>
-
                 <div ng-controller="TransactionsController" id="myTransactionsDiv" style="max-height:350px;">
                     <table class="table">
                         <tr>
                             <th>
-                                <a href="#" ng-click="sortType = 'Date'; sortReverse = !sortReverse">Date/Time of the transaction</a>
-                                <span ng-show="sortType == 'Date' && !sortReverse" class="fade fa-caret-down"></span>
-                                <span ng-show="sortType == 'Date' && sortReverse" class="fade fa-caret-up"></span>
+                                <a href="#" ng-click="sortType = 'Date'; sortReverse = !sortReverse">
+                                    Date/Time of the transaction
+                                    <span ng-show="sortType == 'Date' && !sortReverse" class="fa fa-caret-down"></span>
+                                    <span ng-show="sortType == 'Date' && sortReverse" class="fa fa-caret-up"></span>
+                                </a>
                             </th>
                             <th>
-                                <a href="#" ng-click="sortType = 'CorrespondentName'; sortReverse = !sortReverse">Correspondent Name</a>
-                                <span ng-show="sortType == 'CorrespondentName' && !sortReverse" class="fade fa-caret-down"></span>
-                                <span ng-show="sortType == 'CorrespondentName' && sortReverse" class="fade fa-caret-up"></span>
+                                <a href="#" ng-click="sortType = 'CorrespondentName'; sortReverse = !sortReverse">
+                                    Correspondent Name
+                                    <span ng-show="sortType == 'CorrespondentName' && !sortReverse" class="fa fa-caret-down"></span>
+                                    <span ng-show="sortType == 'CorrespondentName' && sortReverse" class="fa fa-caret-up"></span>
+                                </a>
                             </th>
                             <th>
-                                <a href="#" ng-click="sortType = 'Amount'; sortReverse = !sortReverse">Transaction amount</a>
-                                <span ng-show="sortType == 'Amount' && !sortReverse" class="fade fa-caret-down"></span>
-                                <span ng-show="sortType == 'Amount' && sortReverse" class="fade fa-caret-up"></span>
+                                <a href="#" ng-click="sortType = 'Amount'; sortReverse = !sortReverse">
+                                    Transaction amount
+                                    <span ng-show="sortType == 'Amount' && !sortReverse" class="fa fa-caret-down"></span>
+                                    <span ng-show="sortType == 'Amount' && sortReverse" class="fa fa-caret-up"></span>
+                                </a>
                             </th>
                             <th>Resulting balance</th>
                             <th></th>
@@ -87,7 +92,7 @@
                                 <span ng-show="r.TransactionType != 1" style="color:red">Debit: {{r.Amount}} PW</span>
                             </td>
                             <td>{{r.MyResultingBalance}}</td>
-                            <td><a href="#" ng-click="copyTransaction(r.CorrespondentId, r.CorrespondentName, r.Amount)" ng-show="r.TransactionType != 1">Copy transaction</a></td>
+                            <td><a href="#" ng-click="copyTransaction(r.CorrespondentId, r.CorrespondentName, r.Amount)" ng-show="r.TransactionType != 1"><i class="fa fa-bars" style="padding-right:5px;"></i>Copy transaction</a></td>
                         </tr>
                     </table>
                 </div>
